@@ -2,8 +2,6 @@
 import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
 
 const initScenes = () => {
     let container = document.getElementById('container')
@@ -21,19 +19,12 @@ const initScenes = () => {
     // -- 添加物体
     // 创建几何体
     const geometry = new THREE.BoxGeometry(1,1,1);
-    // 创建基础网格材质时可设置颜色 new THREE.MeshBasicMaterial({color: 0x0080ff});
-    const material = new THREE.MeshNormalMaterial();
+    const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} )
     const cube = new THREE.Mesh( geometry, material );
-    cube.position.set(5,0,0);
-    // 缩放
-    // cube.scale.set(2,1,1);
-    // 旋转
-    cube.rotation.set(Math.PI / 4, 0, 0)
-    // cube.position.x = 2;
     scene.add( cube );
     
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize( 800, 768 );
+    renderer.setSize( 500, 500 );
     container.appendChild(renderer.domElement)
 
     // renderer.render( scene, camera );
@@ -42,13 +33,9 @@ const initScenes = () => {
     // 添加坐标轴辅助器
     const axesHelper = new THREE.AxesHelper(5);
     scene.add(axesHelper);
-    // 设置时钟
-    const clock = new THREE.Clock();
-    gsap.to(cube, { duration: 2.5, ease: "bounce.out", x: 1 });
     // 渲染函数
     const renderFn = () => {
         renderer.render(scene, camera);
-        // 渲染下一帧的时候调用render函数
         requestAnimationFrame(renderFn);
     };
     renderFn();
@@ -68,8 +55,8 @@ onMounted(() => {
 </template>
 <style>
 #container {
-    width: 1080px;
-    height: 768px;
+    width: 600px;
+    height: 800px;
     border: 1px solid skyblue;
 }
 canvas {

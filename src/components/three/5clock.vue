@@ -2,8 +2,6 @@
 import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// 导入动画库
-import gsap from "gsap";
 
 const initScenes = () => {
     let container = document.getElementById('container')
@@ -44,9 +42,16 @@ const initScenes = () => {
     scene.add(axesHelper);
     // 设置时钟
     const clock = new THREE.Clock();
-    gsap.to(cube, { duration: 2.5, ease: "bounce.out", x: 1 });
     // 渲染函数
     const renderFn = () => {
+
+        // 获取总时长
+        let totalTime = clock.getElapsedTime();
+        let deltaTime = clock.getDelta();
+        // console.log("时钟运行总时长",totalTime);
+        console.log("两次获取事件间隔时间",deltaTime); // 两针的时间差
+        let t = totalTime % 5;
+        cube.position.x = t * 1;
         renderer.render(scene, camera);
         // 渲染下一帧的时候调用render函数
         requestAnimationFrame(renderFn);

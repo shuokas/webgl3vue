@@ -3,7 +3,8 @@ import { onMounted, ref } from "vue";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // 导入动画库
-import codingImg from '@/assets/images/JavaScript.png';
+import gsap from "gsap";
+import * as dat from "dat.gui";
 
 const initScenes = () => {
     let container = document.getElementById('container')
@@ -19,24 +20,28 @@ const initScenes = () => {
     scene.add(camera);
     
     // -- 添加物体
-    // 导入纹理
-    const textureLoader = new THREE.TextureLoader();
-    const codingColorTexture = textureLoader.load(codingImg);
     // 创建几何体
-    const cubeGeometry = new THREE.BoxGeometry(1,1,1);
-    // 设置偏移
-    // codingColorTexture.offset.set(0.5, 0.5); x y
-    // 纹理旋转
-    // codingColorTexture.rotation = Math.PI / 4;
-    // 设置旋转的原点
-    // codingColorTexture.center.set(0.5, 0.5);
-    // 设置纹理重复 repeat
-    codingColorTexture.repeat.set(2,3);
-    // 材质
-    const basicMaterial = new THREE.MeshBasicMaterial({color: '#ffffff', map: codingColorTexture});
-    // 物体
-    const cube = new THREE.Mesh(cubeGeometry, basicMaterial);
-    scene.add(cube);
+    const geometry = new THREE.BufferGeometry();
+    // 一位数组，每3个值设为一个顶点
+    const vertices = new Float32Array([
+        -1.0, -1.0, 1.0,
+        1.0, -1.0, 1.0,
+        1.0, 1.0, 1.0,
+        1.0, 1.0, 1.0,
+        -1.0, 1.0, 1.0,
+        -1.0, -1.0, 1.0,
+    ])
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+
+    // 创建基础网格材质时可设置颜色 new THREE.MeshBasicMaterial({color: 0x0080ff});
+    const material = new THREE.MeshBasicMaterial({color: 0xffff00});
+    // 根据几何体合材质创造物体
+    const mesh = new THREE.Mesh(geometry, material);
+    console.log("MESH", mesh);
+    scene.add(mesh);
+
+    console.log('geometry',geometry);
 
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( 800, 768 );

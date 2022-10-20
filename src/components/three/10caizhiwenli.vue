@@ -24,14 +24,6 @@ const initScenes = () => {
     const codingColorTexture = textureLoader.load(codingImg);
     // 创建几何体
     const cubeGeometry = new THREE.BoxGeometry(1,1,1);
-    // 设置偏移
-    // codingColorTexture.offset.set(0.5, 0.5); x y
-    // 纹理旋转
-    // codingColorTexture.rotation = Math.PI / 4;
-    // 设置旋转的原点
-    // codingColorTexture.center.set(0.5, 0.5);
-    // 设置纹理重复 repeat
-    codingColorTexture.repeat.set(2,3);
     // 材质
     const basicMaterial = new THREE.MeshBasicMaterial({color: '#ffffff', map: codingColorTexture});
     // 物体

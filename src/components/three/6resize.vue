@@ -4,7 +4,6 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // 导入动画库
 import gsap from "gsap";
-import * as dat from "dat.gui";
 
 const initScenes = () => {
     let container = document.getElementById('container')
@@ -32,33 +31,7 @@ const initScenes = () => {
     cube.rotation.set(Math.PI / 4, 0, 0)
     // cube.position.x = 2;
     scene.add( cube );
-
-    console.log('cube',cube);
-    console.log('geometry',geometry);
-
-    // GUI
-    const gui = new dat.GUI();
-    gui.add(cube.position, 'x').min(0).max(5).step(0.01).name('x轴').onChange((value) => {
-        console.log("值",value);
-    });
-    gui.add(cube.rotation,'y').min(0).max(5);
-    // 修改物体颜色
-    const colorParams = {
-        color: '#ffff00',
-        fn: () => {
-            gsap.to(cube.position,{x: 5, duration: 2, yoyo: true, repeat: -1})
-        }
-    };
-    gui.addColor(colorParams, 'color').onChange((value) => {
-        console.log("颜色修改", value);
-        // cube.material.color.set(value);
-    })
-    gui.add(cube, 'visible').name('显示')
-    // 点击按钮出发方法
-    gui.add(colorParams, 'fn').name('运动');
-    let folder = gui.addFolder('设置立方体');
-    folder.add(cube.material, 'wireframe')
-
+    
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize( 800, 768 );
     container.appendChild(renderer.domElement)
@@ -74,9 +47,41 @@ const initScenes = () => {
     scene.add(axesHelper);
     // 设置时钟
     // const clock = new THREE.Clock();
-
+    let animation = gsap.to(cube.position, { duration: 2.5, ease: "bounce.out", x: 5, repeat: -1, yoyo: true, onComplete: () => {
+        console.log("动画完成");
+    } });
+    window.addEventListener('dblclick', () => {
+        console.log(animation.isActive());
+        if (animation.isActive()) {
+            animation.pause();
+        }else {
+            animation.resume();
+        }
+    })
+    gsap.to(cube.rotation, { x: 2 * Math.PI , duration: 2.5, ease: "bounce.out", repeat: -1, yoyo: true });
+    // resize
+    window.addEventListener('resize', () => {
+        console.log("监听画面变化");
+        // 更新摄像头
+        camera.aspect = window.innerWidth / window.innerHeight;
+        // 更新摄像机的投影矩阵
+        camera.updateProjectionMatrix();
+        // 更新渲染器
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // 设置渲染器的像素比
+        renderer.setPixelRatio(window.devicePixelRatio);
+    })
     // 渲染函数
-    const renderFn = (time) => {
+    const renderFn = () => {
+        // 获取总时长
+        // let totalTime = clock.getElapsedTime();
+        // let deltaTime = clock.getDelta();
+        
+        // // console.log("时钟运行总时长",totalTime);
+        // console.log("两次获取事件间隔时间",deltaTime); // 两针的时间差
+        // let t = totalTime % 5;
+        // cube.position.x = t * 1;
+        // cube.rotation.x = t * 1;
         controls.update();
         renderer.render(scene, camera);
         // 渲染下一帧的时候调用render函数

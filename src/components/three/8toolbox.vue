@@ -33,9 +33,6 @@ const initScenes = () => {
     // cube.position.x = 2;
     scene.add( cube );
 
-    console.log('cube',cube);
-    console.log('geometry',geometry);
-
     // GUI
     const gui = new dat.GUI();
     gui.add(cube.position, 'x').min(0).max(5).step(0.01).name('x轴').onChange((value) => {
@@ -74,9 +71,21 @@ const initScenes = () => {
     scene.add(axesHelper);
     // 设置时钟
     // const clock = new THREE.Clock();
-
+ 
+    // resize
+    window.addEventListener('resize', () => {
+        console.log("监听画面变化");
+        // 更新摄像头
+        camera.aspect = window.innerWidth / window.innerHeight;
+        // 更新摄像机的投影矩阵
+        camera.updateProjectionMatrix();
+        // 更新渲染器
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // 设置渲染器的像素比
+        renderer.setPixelRatio(window.devicePixelRatio);
+    })
     // 渲染函数
-    const renderFn = (time) => {
+    const renderFn = () => {
         controls.update();
         renderer.render(scene, camera);
         // 渲染下一帧的时候调用render函数

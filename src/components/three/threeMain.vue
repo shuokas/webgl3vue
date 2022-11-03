@@ -130,12 +130,12 @@ onMounted(() => {
 
 </template>
 <style>
-#container {
+/* #container {
     width: 1080px;
     height: 768px;
     border: 1px solid skyblue;
 }
 canvas {
     margin: 0 auto;
-}
+} */
 </style>

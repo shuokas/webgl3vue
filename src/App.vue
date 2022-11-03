@@ -4,20 +4,14 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <!-- <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-  <!-- <RouterLink to="/about">About</RouterLink> -->
+  <!-- 这里写首页内容，跟下面挂router配合使用 -->
 
   <RouterView />
 </template>
 
 <style scoped>
-header {
+/* 初始化样式全部注释了 */
+/* header {
   line-height: 1.5;
   max-height: 100vh;
 }
@@ -77,5 +71,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>
